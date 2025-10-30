@@ -12,7 +12,7 @@ import modal
 # --- 1. 用户可配置常量 ---
 MODAL_APP_NAME = os.environ.get('MODAL_APP_NAME') or "proxy-app"
 MODAL_USER_NAME = os.environ.get('MODAL_USER_NAME') or ""
-
+DEPLOY_REGION = os.environ.get('DEPLOY_REGION') or "ap-northeast"
 # --- 2. 定义 Modal 镜像 ---
 image = modal.Image.debian_slim().pip_install("fastapi", "uvicorn", "requests").run_commands(
     "apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*",
@@ -275,6 +275,7 @@ fastapi_app = FastAPI(lifespan=lifespan)
     secrets=[app_secrets],
     timeout=86400,
     keep_warm=1,
+    region=DEPLOY_REGION  # 在此处指定部署地区
 )
 @modal.asgi_app()
 def web_server():
@@ -296,3 +297,4 @@ def web_server():
             return Response(content=f"读取订阅时发生错误: {e}", status_code=500, media_type="text/plain; charset=utf-8")
     
     return fastapi_app
+
