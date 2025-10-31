@@ -12,7 +12,7 @@ import modal
 # --- 1. 用户可配置常量 ---
 MODAL_APP_NAME = os.environ.get('MODAL_APP_NAME') or "proxy-app"
 MODAL_USER_NAME = os.environ.get('MODAL_USER_NAME') or ""
-DEPLOY_REGION = os.environ.get('DEPLOY_REGION') or "ca-central-1"
+DEPLOY_REGION = os.environ.get('DEPLOY_REGION') or "asia-northeast1"
 
 # --- 2. 定义 Modal 镜像 ---
 image = modal.Image.debian_slim().pip_install("fastapi", "uvicorn", "requests").run_commands(
