@@ -213,9 +213,7 @@ fastapi_app = FastAPI(lifespan=lifespan)
     secrets=[app_secrets],
     timeout=86400,
     keep_warm=1,
-    region=DEPLOY_REGION,
-    cpu=0.125,  # 0.125 CPU核心
-    memory=128  # 128MiB内存
+    region=DEPLOY_REGION
 )
 @modal.asgi_app()
 def web_server():
