@@ -3,7 +3,7 @@ name: Deploy to Modal
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 18 * * *'
+    - cron: '0 18 24-31 * *'
   repository_dispatch:
     types: [service-down-alert]
 
@@ -80,3 +80,24 @@ jobs:
           echo "项目 URL: https://${{ env.MODAL_USER_NAME }}--${{ env.MODAL_APP_NAME }}-web_server.modal.run"
           echo "订阅 URL: https://${{ env.MODAL_USER_NAME }}--${{ env.MODAL_APP_NAME }}-web_server.modal.run/${{ env.SUB_PATH }}"
           echo "--------------------------------------------------"
+      - name: Commit log file to repo
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+         git config user.name "github-actions[bot]"
+         git config user.email "github-actions[bot]@users.noreply.github.com"
+
+         # 如果日志文件不存在，说明是第一次运行，先创建
+         if [ ! -f click_log.txt ]; then
+          echo "初始化日志文件于 $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')" > click_log.txt
+         fi
+
+         git add click_log.txt
+
+         # 提交并推送（如果有变更）
+         if git diff --cached --quiet; then
+          echo "无变化，无需提交"
+         else
+          git commit -m "更新日志: $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+         fi
