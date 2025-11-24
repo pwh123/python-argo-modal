@@ -4,13 +4,13 @@ on:
   workflow_dispatch:  # 保留手动触发选项
   schedule:
     # 定时触发规则（UTC时间，需转换为本地时间=UTC+8）
-    - cron: '0 8 24 * *' 
+    - cron: '0 18 24 * *' 
 
 jobs:
   stop-app:
     runs-on: ubuntu-latest
     env:
-      MODAL_APP_NAME: ${{ secrets-lODAL_APP_NAME || 'proxy-app' }}  # 应用名称
+      MODAL_APP_NAME: ${{ secrets.lODAL_APP_NAME || 'proxy-app' }}  # 应用名称
 
     steps:
       - name: Checkout repository
