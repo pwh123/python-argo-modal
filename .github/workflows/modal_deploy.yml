@@ -90,8 +90,9 @@ jobs:
          # 如果日志文件不存在，说明是第一次运行，先创建
          if [ ! -f click_log.txt ]; then
           echo "初始化日志文件于 $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')" > click_log.txt
+         else
+          echo "最后一次操作执行于: $CURRENT_TIME" > click_log.txt
          fi
-
          git add click_log.txt
 
          # 提交并推送（如果有变更）
