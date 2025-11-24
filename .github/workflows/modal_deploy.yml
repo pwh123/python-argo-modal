@@ -3,7 +3,7 @@ name: Deploy to Modal
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 18 24-31 * *'
+    - cron: '0 18 1-23 * *'
   repository_dispatch:
     types: [service-down-alert]
 
