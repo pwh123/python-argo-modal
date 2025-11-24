@@ -1,0 +1,35 @@
+name: 定时停止 Modal 应用
+
+on:
+  workflow_dispatch:  # 保留手动触发选项
+  schedule:
+    # 定时触发规则（UTC时间，需转换为本地时间=UTC+8）
+    - cron: '0 8 24 * *' 
+
+jobs:
+  stop-app:
+    runs-on: ubuntu-latest
+    env:
+      MODAL_APP_NAME: ${{ secrets-lODAL_APP_NAME || 'proxy-app' }}  # 应用名称
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Modal
+        run: pip install modal
+
+      - name: Authenticate Modal
+        run: |
+          modal token set --token-id ${{ secrets.MODAL_TOKEN_ID }} --token-secret ${{ secrets.MODAL_TOKEN_SECRET }}
+
+      - name: Stop Existing App
+        run: |
+          echo "开始停止应用: ${{ env.MODAL_APP_NAME }}"
+          modal app stop ${{ env.MODAL_APP_NAME }} || true  # 忽略停止失败的情况
+          echo "应用停止操作完成"
