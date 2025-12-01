@@ -1,5 +1,3 @@
-# python-argo-modal
-
 ## 必要的变量——在 action 仓库机密中设置
 
 ### Modal的变量
@@ -66,14 +64,3 @@ ap-northeast-3	AWS 大阪	亚马逊日本大阪
 asia-northeast1	GCP东京	谷歌云日本东京
 me	me-west1	特拉维夫 GCP	谷歌云以色列特拉维夫
 sa	sa-east-1	AWS 圣保罗	亚马逊巴西圣保罗
-## 保活
-
-项目24小时后会自动关闭，关闭的项目无法再唤醒，保活逻辑采用重部署方式
-
-### 保活方式1：action 定时任务
-
-每天凌晨2点重部署，删除工作流中定时触发器的 `#` 号注释，即可启用
-
-### 保活方式2：uptime+webhook 启动 action
-
-具体教程：<https://blog.811520.xyz/post/2025/09/250916-uptime-action/>
