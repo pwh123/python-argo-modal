@@ -11,8 +11,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      MODAL_USER_NAME: ${{ secrets.MODAL_USER_NAME }}
-      MODAL_APP_NAME: ${{ secrets.MODAL_APP_NAME || 'proxy-app' }}
+      MODAL_USER_NAME: ${{ secrets-lODAL_USER_NAME }}
+      MODAL_APP_NAME: ${{ secrets-lODAL_APP_NAME || 'proxy-app' }}
       SUB_PATH: ${{ secrets.SUB_PATH || 'sub' }}
       SERVER_PORT: ${{ secrets.SERVER_PORT || '3000' }}
       
@@ -86,10 +86,13 @@ jobs:
         run: |
          git config user.name "github-actions[bot]"
          git config user.email "github-actions[bot]@users.noreply.github.com"
-
+         
+         # 定义当前北京时间
+         CURRENT_TIME=$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')
+         
          # 如果日志文件不存在，说明是第一次运行，先创建
          if [ ! -f click_log.txt ]; then
-          echo "初始化日志文件于 $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')" > click_log.txt
+          echo "初始化日志文件于 $CURRENT_TIME" > click_log.txt
          else
           echo "最后一次操作执行于: $CURRENT_TIME" > click_log.txt
          fi
@@ -99,6 +102,6 @@ jobs:
          if git diff --cached --quiet; then
           echo "无变化，无需提交"
          else
-          git commit -m "更新日志: $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
+          git commit -m "更新日志: $CURRENT_TIME"
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
          fi
