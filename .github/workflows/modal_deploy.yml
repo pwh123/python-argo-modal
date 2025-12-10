@@ -11,8 +11,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      MODAL_USER_NAME: ${{ secrets-lODAL_USER_NAME }}
-      MODAL_APP_NAME: ${{ secrets-lODAL_APP_NAME || 'proxy-app' }}
+      MODAL_USER_NAME: ${{ secrets.lODAL_USER_NAME }}
+      MODAL_APP_NAME: ${{ secrets.lODAL_APP_NAME || 'proxy-app' }}
       SUB_PATH: ${{ secrets.SUB_PATH || 'sub' }}
       SERVER_PORT: ${{ secrets.SERVER_PORT || '3000' }}
       
